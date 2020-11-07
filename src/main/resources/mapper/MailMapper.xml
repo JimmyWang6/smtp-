@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.novaborn.dao.MailMapper" >
+  <resultMap id="BaseResultMap" type="net.novaborn.entity.Mail" >
+    <id column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="messagId" property="messagId" jdbcType="VARCHAR" />
+    <result column="userAddress" property="userAddress" jdbcType="VARCHAR" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    <result column="from" property="from" jdbcType="VARCHAR" />
+    <result column="fromEmail" property="fromEmail" jdbcType="VARCHAR" />
+    <result column="to" property="to" jdbcType="VARCHAR" />
+    <result column="toEmail" property="toEmail" jdbcType="VARCHAR" />
+    <result column="sendTime" property="sendTime" jdbcType="DATE" />
+    <result column="subject" property="subject" jdbcType="VARCHAR" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
+    <result column="deleted" property="deleted" jdbcType="INTEGER" />
+    <result column="draft" property="draft" jdbcType="INTEGER" />
+    <result column="seen" property="seen" jdbcType="INTEGER" />
+    <result column="mailBox" property="mailBox" jdbcType="VARCHAR" />
+    <result column="size" property="size" jdbcType="INTEGER" />
+    <result column="textContent" property="textContent" jdbcType="VARCHAR" />
+    <result column="replyTo" property="replyTo" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="net.novaborn.entity.Mail" extends="BaseResultMap" >
+    <result column="data" property="data" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    `uid`, messagId, userAddress, avatar, `from`, fromEmail, `to`, toEmail, sendTime, 
+    subject, flag, deleted, draft, seen, mailBox, `size`, textContent, replyTo
+  </sql>
+  <sql id="Blob_Column_List" >
+    `data`
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="net.novaborn.entity.MailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from Mail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.novaborn.entity.MailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from Mail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from Mail
+    where `uid` = #{uid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from Mail
+    where `uid` = #{uid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="net.novaborn.entity.MailExample" >
+    delete from Mail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="net.novaborn.entity.Mail" >
+    insert into Mail (`uid`, messagId, userAddress, 
+      avatar, `from`, fromEmail, 
+      `to`, toEmail, sendTime, 
+      subject, flag, deleted, 
+      draft, seen, mailBox, 
+      `size`, textContent, replyTo, 
+      `data`)
+    values (#{uid,jdbcType=INTEGER}, #{messagId,jdbcType=VARCHAR}, #{userAddress,jdbcType=VARCHAR}, 
+      #{avatar,jdbcType=VARCHAR}, #{from,jdbcType=VARCHAR}, #{fromEmail,jdbcType=VARCHAR}, 
+      #{to,jdbcType=VARCHAR}, #{toEmail,jdbcType=VARCHAR}, #{sendTime,jdbcType=DATE}, 
+      #{subject,jdbcType=VARCHAR}, #{flag,jdbcType=INTEGER}, #{deleted,jdbcType=INTEGER}, 
+      #{draft,jdbcType=INTEGER}, #{seen,jdbcType=INTEGER}, #{mailBox,jdbcType=VARCHAR}, 
+      #{size,jdbcType=INTEGER}, #{textContent,jdbcType=VARCHAR}, #{replyTo,jdbcType=VARCHAR}, 
+      #{data,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="net.novaborn.entity.Mail" >
+    insert into Mail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        `uid`,
+      </if>
+      <if test="messagId != null" >
+        messagId,
+      </if>
+      <if test="userAddress != null" >
+        userAddress,
+      </if>
+      <if test="avatar != null" >
+        avatar,
+      </if>
+      <if test="from != null" >
+        `from`,
+      </if>
+      <if test="fromEmail != null" >
+        fromEmail,
+      </if>
+      <if test="to != null" >
+        `to`,
+      </if>
+      <if test="toEmail != null" >
+        toEmail,
+      </if>
+      <if test="sendTime != null" >
+        sendTime,
+      </if>
+      <if test="subject != null" >
+        subject,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+      <if test="draft != null" >
+        draft,
+      </if>
+      <if test="seen != null" >
+        seen,
+      </if>
+      <if test="mailBox != null" >
+        mailBox,
+      </if>
+      <if test="size != null" >
+        `size`,
+      </if>
+      <if test="textContent != null" >
+        textContent,
+      </if>
+      <if test="replyTo != null" >
+        replyTo,
+      </if>
+      <if test="data != null" >
+        `data`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="messagId != null" >
+        #{messagId,jdbcType=VARCHAR},
+      </if>
+      <if test="userAddress != null" >
+        #{userAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="from != null" >
+        #{from,jdbcType=VARCHAR},
+      </if>
+      <if test="fromEmail != null" >
+        #{fromEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="to != null" >
+        #{to,jdbcType=VARCHAR},
+      </if>
+      <if test="toEmail != null" >
+        #{toEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        #{sendTime,jdbcType=DATE},
+      </if>
+      <if test="subject != null" >
+        #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="draft != null" >
+        #{draft,jdbcType=INTEGER},
+      </if>
+      <if test="seen != null" >
+        #{seen,jdbcType=INTEGER},
+      </if>
+      <if test="mailBox != null" >
+        #{mailBox,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null" >
+        #{size,jdbcType=INTEGER},
+      </if>
+      <if test="textContent != null" >
+        #{textContent,jdbcType=VARCHAR},
+      </if>
+      <if test="replyTo != null" >
+        #{replyTo,jdbcType=VARCHAR},
+      </if>
+      <if test="data != null" >
+        #{data,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="net.novaborn.entity.MailExample" resultType="java.lang.Integer" >
+    select count(*) from Mail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update Mail
+    <set >
+      <if test="record.uid != null" >
+        `uid` = #{record.uid,jdbcType=INTEGER},
+      </if>
+      <if test="record.messagId != null" >
+        messagId = #{record.messagId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userAddress != null" >
+        userAddress = #{record.userAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.avatar != null" >
+        avatar = #{record.avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="record.from != null" >
+        `from` = #{record.from,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fromEmail != null" >
+        fromEmail = #{record.fromEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.to != null" >
+        `to` = #{record.to,jdbcType=VARCHAR},
+      </if>
+      <if test="record.toEmail != null" >
+        toEmail = #{record.toEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sendTime != null" >
+        sendTime = #{record.sendTime,jdbcType=DATE},
+      </if>
+      <if test="record.subject != null" >
+        subject = #{record.subject,jdbcType=VARCHAR},
+      </if>
+      <if test="record.flag != null" >
+        flag = #{record.flag,jdbcType=INTEGER},
+      </if>
+      <if test="record.deleted != null" >
+        deleted = #{record.deleted,jdbcType=INTEGER},
+      </if>
+      <if test="record.draft != null" >
+        draft = #{record.draft,jdbcType=INTEGER},
+      </if>
+      <if test="record.seen != null" >
+        seen = #{record.seen,jdbcType=INTEGER},
+      </if>
+      <if test="record.mailBox != null" >
+        mailBox = #{record.mailBox,jdbcType=VARCHAR},
+      </if>
+      <if test="record.size != null" >
+        `size` = #{record.size,jdbcType=INTEGER},
+      </if>
+      <if test="record.textContent != null" >
+        textContent = #{record.textContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.replyTo != null" >
+        replyTo = #{record.replyTo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.data != null" >
+        `data` = #{record.data,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update Mail
+    set `uid` = #{record.uid,jdbcType=INTEGER},
+      messagId = #{record.messagId,jdbcType=VARCHAR},
+      userAddress = #{record.userAddress,jdbcType=VARCHAR},
+      avatar = #{record.avatar,jdbcType=VARCHAR},
+      `from` = #{record.from,jdbcType=VARCHAR},
+      fromEmail = #{record.fromEmail,jdbcType=VARCHAR},
+      `to` = #{record.to,jdbcType=VARCHAR},
+      toEmail = #{record.toEmail,jdbcType=VARCHAR},
+      sendTime = #{record.sendTime,jdbcType=DATE},
+      subject = #{record.subject,jdbcType=VARCHAR},
+      flag = #{record.flag,jdbcType=INTEGER},
+      deleted = #{record.deleted,jdbcType=INTEGER},
+      draft = #{record.draft,jdbcType=INTEGER},
+      seen = #{record.seen,jdbcType=INTEGER},
+      mailBox = #{record.mailBox,jdbcType=VARCHAR},
+      `size` = #{record.size,jdbcType=INTEGER},
+      textContent = #{record.textContent,jdbcType=VARCHAR},
+      replyTo = #{record.replyTo,jdbcType=VARCHAR},
+      `data` = #{record.data,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update Mail
+    set `uid` = #{record.uid,jdbcType=INTEGER},
+      messagId = #{record.messagId,jdbcType=VARCHAR},
+      userAddress = #{record.userAddress,jdbcType=VARCHAR},
+      avatar = #{record.avatar,jdbcType=VARCHAR},
+      `from` = #{record.from,jdbcType=VARCHAR},
+      fromEmail = #{record.fromEmail,jdbcType=VARCHAR},
+      `to` = #{record.to,jdbcType=VARCHAR},
+      toEmail = #{record.toEmail,jdbcType=VARCHAR},
+      sendTime = #{record.sendTime,jdbcType=DATE},
+      subject = #{record.subject,jdbcType=VARCHAR},
+      flag = #{record.flag,jdbcType=INTEGER},
+      deleted = #{record.deleted,jdbcType=INTEGER},
+      draft = #{record.draft,jdbcType=INTEGER},
+      seen = #{record.seen,jdbcType=INTEGER},
+      mailBox = #{record.mailBox,jdbcType=VARCHAR},
+      `size` = #{record.size,jdbcType=INTEGER},
+      textContent = #{record.textContent,jdbcType=VARCHAR},
+      replyTo = #{record.replyTo,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="net.novaborn.entity.Mail" >
+    update Mail
+    <set >
+      <if test="messagId != null" >
+        messagId = #{messagId,jdbcType=VARCHAR},
+      </if>
+      <if test="userAddress != null" >
+        userAddress = #{userAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="from != null" >
+        `from` = #{from,jdbcType=VARCHAR},
+      </if>
+      <if test="fromEmail != null" >
+        fromEmail = #{fromEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="to != null" >
+        `to` = #{to,jdbcType=VARCHAR},
+      </if>
+      <if test="toEmail != null" >
+        toEmail = #{toEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        sendTime = #{sendTime,jdbcType=DATE},
+      </if>
+      <if test="subject != null" >
+        subject = #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="draft != null" >
+        draft = #{draft,jdbcType=INTEGER},
+      </if>
+      <if test="seen != null" >
+        seen = #{seen,jdbcType=INTEGER},
+      </if>
+      <if test="mailBox != null" >
+        mailBox = #{mailBox,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null" >
+        `size` = #{size,jdbcType=INTEGER},
+      </if>
+      <if test="textContent != null" >
+        textContent = #{textContent,jdbcType=VARCHAR},
+      </if>
+      <if test="replyTo != null" >
+        replyTo = #{replyTo,jdbcType=VARCHAR},
+      </if>
+      <if test="data != null" >
+        `data` = #{data,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where `uid` = #{uid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="net.novaborn.entity.Mail" >
+    update Mail
+    set messagId = #{messagId,jdbcType=VARCHAR},
+      userAddress = #{userAddress,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      `from` = #{from,jdbcType=VARCHAR},
+      fromEmail = #{fromEmail,jdbcType=VARCHAR},
+      `to` = #{to,jdbcType=VARCHAR},
+      toEmail = #{toEmail,jdbcType=VARCHAR},
+      sendTime = #{sendTime,jdbcType=DATE},
+      subject = #{subject,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=INTEGER},
+      deleted = #{deleted,jdbcType=INTEGER},
+      draft = #{draft,jdbcType=INTEGER},
+      seen = #{seen,jdbcType=INTEGER},
+      mailBox = #{mailBox,jdbcType=VARCHAR},
+      `size` = #{size,jdbcType=INTEGER},
+      textContent = #{textContent,jdbcType=VARCHAR},
+      replyTo = #{replyTo,jdbcType=VARCHAR},
+      `data` = #{data,jdbcType=LONGVARCHAR}
+    where `uid` = #{uid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.novaborn.entity.Mail" >
+    update Mail
+    set messagId = #{messagId,jdbcType=VARCHAR},
+      userAddress = #{userAddress,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      `from` = #{from,jdbcType=VARCHAR},
+      fromEmail = #{fromEmail,jdbcType=VARCHAR},
+      `to` = #{to,jdbcType=VARCHAR},
+      toEmail = #{toEmail,jdbcType=VARCHAR},
+      sendTime = #{sendTime,jdbcType=DATE},
+      subject = #{subject,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=INTEGER},
+      deleted = #{deleted,jdbcType=INTEGER},
+      draft = #{draft,jdbcType=INTEGER},
+      seen = #{seen,jdbcType=INTEGER},
+      mailBox = #{mailBox,jdbcType=VARCHAR},
+      `size` = #{size,jdbcType=INTEGER},
+      textContent = #{textContent,jdbcType=VARCHAR},
+      replyTo = #{replyTo,jdbcType=VARCHAR}
+    where `uid` = #{uid,jdbcType=INTEGER}
+  </update>
+</mapper>

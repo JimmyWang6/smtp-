@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    username: root
+    password: 1999611a
+    url: jdbc:mysql://wangzhiwang.online:3306/email?serverTimezone=UTC
+    driver-class-name: com.mysql.jdbc.Driver
+
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    cache:  false
+    encoding: UTF-8
+
+  resources:
+    static-locations: classpath:/static/
+
+
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: hnu.houseweb.entity
